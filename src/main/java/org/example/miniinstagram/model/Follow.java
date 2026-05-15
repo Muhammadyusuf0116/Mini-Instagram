@@ -9,7 +9,11 @@ import lombok.*;
 @Setter
 @Builder
 @Entity
-
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"follower_id", "following_id"})
+        }
+)
 public class Follow {
 
     @Id

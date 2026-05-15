@@ -48,13 +48,16 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
-    private List<Follow> followerList;
-
     @OneToMany(mappedBy = "following", fetch = FetchType.LAZY)
-    private List<Follow> followingList;
+    private List<Follow> followers;
+
+    @OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
+    private List<Follow> following;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
+    private List<Notification> notifications;
 }
 

@@ -6,12 +6,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class UserResponseDTO {
+public class ProfileResponseDTO {
 
     private Long id;
     private String username;
     private String email;
     private String fullName;
-    private String role;
+    private String bio;
+    private String profileImage;
+    private Integer followersCount;
+    private Integer followingCount;
     private LocalDateTime createdAt;
+
+
 }

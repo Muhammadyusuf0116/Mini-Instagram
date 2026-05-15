@@ -28,6 +28,7 @@ public class Notification {
     private boolean isRead;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

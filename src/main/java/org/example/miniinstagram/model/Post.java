@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-
 @Entity
 @Builder
 public class Post {
