@@ -5,6 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.example.miniinstagram.enums.Role;
+import org.example.miniinstagram.model.User;
+import org.example.miniinstagram.repository.UserRepository;
 import org.example.miniinstagram.service.serviceImpl.UserDetailsServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -28,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null && !authHeader.startsWith("Bearer")){
+        if (authHeader == null || !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
             return;
         }
@@ -42,6 +46,21 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 UserDetails userDetails =
                         userDetailsService.loadUserByUsername(email);
+
+                // Checked User Status
+                User user = userRepository.findByEmail(email)
+                        .orElseThrow(() ->
+                                new RuntimeException("User not found"));
+
+                if (user.getRole() == Role.ROLE_BAN) {
+
+                    response.sendError(
+                            HttpServletResponse.SC_FORBIDDEN,
+                            "Your account is banned"
+                    );
+
+                    return;
+                }
 
                 if (jwtUtil.validateToken(token, userDetails.getUsername())) {
                     UsernamePasswordAuthenticationToken authToken =

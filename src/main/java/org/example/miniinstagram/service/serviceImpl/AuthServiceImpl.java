@@ -55,6 +55,10 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Parol noto'g'ri");
         }
 
+        if (user.getRole() == Role.ROLE_BAN){
+            throw new RuntimeException("Your account is banned!");
+        }
+
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
 
         return authMapper.toResponseDTO(user, token);
