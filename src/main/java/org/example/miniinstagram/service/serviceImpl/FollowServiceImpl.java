@@ -77,6 +77,31 @@ public class FollowServiceImpl implements FollowService {
                 .toList();
     }
 
+
+    @Override
+    public List<ProfileResponseDTO> getMyFollowers() {
+
+        User currentUser = getCurrentUser();
+
+        return followRepository.findByFollowing(currentUser)
+                .stream()
+                .map(Follow::getFollower)
+                .map(userMapper::toResponseDTO)
+                .toList();
+    }
+
+    @Override
+    public List<ProfileResponseDTO> getMyFollowing() {
+
+        User currentUser = getCurrentUser();
+
+        return followRepository.findByFollower(currentUser)
+                .stream()
+                .map(Follow::getFollowing)
+                .map(userMapper::toResponseDTO)
+                .toList();
+    }
+
     private User getCurrentUser() {
 
         String email = SecurityContextHolder.getContext()

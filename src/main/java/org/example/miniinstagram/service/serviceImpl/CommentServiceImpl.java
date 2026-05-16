@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper commentMapper;
 
     @Override
-    public void createComment(Long postId,
+    public CommentResponseDTO createComment(Long postId,
                               CreateCommentRequestDTO requestDTO) {
 
         User currentUser = getCurrentUser();
@@ -42,10 +42,11 @@ public class CommentServiceImpl implements CommentService {
                 .build();
 
         commentRepository.save(comment);
+        return commentMapper.toResponseDTO(comment);
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public String deleteComment(Long commentId) {
 
         User currentUser = getCurrentUser();
 
@@ -57,6 +58,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         commentRepository.delete(comment);
+        return "Deleted Successfully";
     }
 
     @Override

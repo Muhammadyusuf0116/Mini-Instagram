@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
 
     @Override
-    public void createPost(CreatePostRequestDTO requestDTO) {
+    public PostResponseDTO createPost(CreatePostRequestDTO requestDTO) {
 
         User currentUser = getCurrentUser();
 
@@ -40,10 +40,11 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         postRepository.save(post);
+        return postMapper.toResponseDTO(post);
     }
 
     @Override
-    public void updatePost(Long postId, UpdatePostRequestDTO requestDTO) {
+    public PostResponseDTO updatePost(Long postId, UpdatePostRequestDTO requestDTO) {
 
         User currentUser = getCurrentUser();
 
@@ -59,10 +60,11 @@ public class PostServiceImpl implements PostService {
         post.setImageUrl(requestDTO.getImageUrl());
 
         postRepository.save(post);
+        return postMapper.toResponseDTO(post);
     }
 
     @Override
-    public void deletePost(Long postId) {
+    public String deletePost(Long postId) {
 
         User currentUser = getCurrentUser();
 
@@ -74,6 +76,7 @@ public class PostServiceImpl implements PostService {
         }
 
         postRepository.delete(post);
+        return "Deleted successfully";
     }
 
     @Override

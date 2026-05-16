@@ -9,11 +9,11 @@ import java.util.List;
 public interface PostService {
 
 
-    void createPost(CreatePostRequestDTO requestDTO);
+    PostResponseDTO createPost(CreatePostRequestDTO requestDTO);
 
-    void updatePost(Long postId, UpdatePostRequestDTO requestDTO);
+    PostResponseDTO updatePost(Long postId, UpdatePostRequestDTO requestDTO);
 
-    void deletePost(Long postId);
+    String deletePost(Long postId);
 
     PostResponseDTO getPostById(Long postId);
 

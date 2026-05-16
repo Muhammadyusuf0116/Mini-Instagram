@@ -11,4 +11,8 @@ public interface FollowService {
     List<ProfileResponseDTO> getFollowers(Long userId);
 
     List<ProfileResponseDTO> getFollowing(Long userId);
+
+    List<ProfileResponseDTO> getMyFollowing();
+
+    List<ProfileResponseDTO> getMyFollowers();
 }

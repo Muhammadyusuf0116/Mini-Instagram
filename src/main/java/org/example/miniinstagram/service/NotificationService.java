@@ -9,4 +9,7 @@ public interface NotificationService {
     List<NotificationResponseDTO> getMyNotifications();
 
     void markAsRead(Long notificationId);
+
+    void markAllAsRead();
+
 }

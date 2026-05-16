@@ -15,8 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationServiceImpl
-        implements NotificationService {
+public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
@@ -45,6 +44,21 @@ public class NotificationServiceImpl
         notification.setRead(true);
 
         notificationRepository.save(notification);
+    }
+
+    @Override
+    public void markAllAsRead() {
+
+        User currentUser = getCurrentUser();
+
+        List<Notification> notifications =
+                notificationRepository
+                        .findByReceiverOrderByCreatedAtDesc(currentUser);
+
+        notifications.forEach(notification ->
+                notification.setRead(true));
+
+        notificationRepository.saveAll(notifications);
     }
 
     private User getCurrentUser() {
