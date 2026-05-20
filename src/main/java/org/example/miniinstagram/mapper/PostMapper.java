@@ -2,10 +2,16 @@ package org.example.miniinstagram.mapper;
 
 import org.example.miniinstagram.dto.responseDto.PostResponseDTO;
 import org.example.miniinstagram.model.Post;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PostMapper {
+
+    @Value("${upload.path}")
+    private String uploadPath;
+    @Value("${app.base-url}")
+    private String baseUrl;
 
     public PostResponseDTO toResponseDTO(Post post) {
 
@@ -18,7 +24,7 @@ public class PostMapper {
         dto.setId(post.getId());
         dto.setTitle(post.getTitle());
         dto.setDescription(post.getDescription());
-        dto.setImageUrl(post.getImageUrl());
+        dto.setImageUrl(baseUrl + post.getImageUrl() + uploadPath);
         dto.setCreatedAt(post.getCreatedAt());
 
         if (post.getUser() != null) {

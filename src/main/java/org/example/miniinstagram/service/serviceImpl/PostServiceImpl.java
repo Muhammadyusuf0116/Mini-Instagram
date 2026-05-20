@@ -11,10 +11,13 @@ import org.example.miniinstagram.model.User;
 import org.example.miniinstagram.repository.FollowRepository;
 import org.example.miniinstagram.repository.PostRepository;
 import org.example.miniinstagram.repository.UserRepository;
+import org.example.miniinstagram.service.FileStorageService;
 import org.example.miniinstagram.service.PostService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,17 +29,22 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final PostMapper postMapper;
+    private final FileStorageService fileStorageService;
+
 
     @Override
-    public PostResponseDTO createPost(CreatePostRequestDTO requestDTO) {
+    public PostResponseDTO createPost(CreatePostRequestDTO requestDTO) throws IOException {
 
         User currentUser = getCurrentUser();
+
+        String imageUrl = fileStorageService.saveImage(requestDTO.getImage());
 
         Post post = Post.builder()
                 .title(requestDTO.getTitle())
                 .description(requestDTO.getDescription())
-                .imageUrl(requestDTO.getImageUrl())
+                .imageUrl(imageUrl)
                 .user(currentUser)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         postRepository.save(post);
@@ -44,7 +52,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDTO updatePost(Long postId, UpdatePostRequestDTO requestDTO) {
+    public PostResponseDTO updatePost(Long postId, UpdatePostRequestDTO requestDTO) throws IOException {
 
         User currentUser = getCurrentUser();
 
@@ -52,12 +60,17 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         if (!post.getUser().getId().equals(currentUser.getId())) {
-            throw new RuntimeException("You cannot update this post");
+            throw new RuntimeException("You cannot update this post, You hav not access!");
         }
+
+        String oldImageUrl = post.getImageUrl();
+        String imageUrl = fileStorageService.saveImage(requestDTO.getImage());
 
         post.setTitle(requestDTO.getTitle());
         post.setDescription(requestDTO.getDescription());
-        post.setImageUrl(requestDTO.getImageUrl());
+        post.setImageUrl(imageUrl);
+
+        fileStorageService.deleteImage(oldImageUrl);
 
         postRepository.save(post);
         return postMapper.toResponseDTO(post);
@@ -141,4 +154,5 @@ public class PostServiceImpl implements PostService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
 }

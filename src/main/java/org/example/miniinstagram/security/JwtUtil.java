@@ -12,10 +12,10 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    @Value("miniInstagramSecretKey1234567890ABCDEFminiTrelloSecretKey")
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("9000000")
+    @Value("${jwt.expiration}")
     private Long expiration;
 
 

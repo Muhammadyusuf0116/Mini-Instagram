@@ -4,14 +4,15 @@ import org.example.miniinstagram.dto.requestDto.CreatePostRequestDTO;
 import org.example.miniinstagram.dto.requestDto.UpdatePostRequestDTO;
 import org.example.miniinstagram.dto.responseDto.PostResponseDTO;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PostService {
 
 
-    PostResponseDTO createPost(CreatePostRequestDTO requestDTO);
+    PostResponseDTO createPost(CreatePostRequestDTO requestDTO) throws IOException;
 
-    PostResponseDTO updatePost(Long postId, UpdatePostRequestDTO requestDTO);
+    PostResponseDTO updatePost(Long postId, UpdatePostRequestDTO requestDTO) throws IOException;
 
     String deletePost(Long postId);
 

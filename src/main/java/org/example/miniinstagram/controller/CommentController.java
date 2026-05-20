@@ -3,7 +3,6 @@ package org.example.miniinstagram.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.miniinstagram.dto.requestDto.CreateCommentRequestDTO;
-import org.example.miniinstagram.dto.requestDto.UpdateCommentRequestDTO;
 import org.example.miniinstagram.dto.responseDto.CommentResponseDTO;
 import org.example.miniinstagram.service.CommentService;
 import org.springframework.http.ResponseEntity;

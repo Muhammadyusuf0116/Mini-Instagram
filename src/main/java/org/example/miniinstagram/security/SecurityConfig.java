@@ -1,5 +1,8 @@
 package org.example.miniinstagram.security;
 
+import lombok.RequiredArgsConstructor;
+import org.example.miniinstagram.repository.UserRepository;
+import org.example.miniinstagram.service.serviceImpl.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,7 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final JwtFilter jwtFilter;
 
     private static final String [] PUBLIC_URLS = {
             "/v3/api-docs/**",
@@ -50,7 +55,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         .anyRequest()
-                        .authenticated());
+                        .authenticated())
+        .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

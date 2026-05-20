@@ -9,30 +9,31 @@ import org.example.miniinstagram.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/posts")
+@RequestMapping("api/posts/")
 public class PostController {
 
     private final PostService postService;
 
     @PostMapping()
     public ResponseEntity<PostResponseDTO> createPost(
-            @Valid @RequestBody CreatePostRequestDTO dto
-            ){
+            @ModelAttribute CreatePostRequestDTO dto
+            ) throws IOException {
         return ResponseEntity.ok(postService.createPost(dto));
     }
 
     @PutMapping("{postId}")
     public ResponseEntity<PostResponseDTO> updatePost(
-            @PathVariable Long postId, @Valid @RequestBody UpdatePostRequestDTO dto
-            ){
+            @PathVariable Long postId, @ModelAttribute UpdatePostRequestDTO dto
+            ) throws IOException {
         return ResponseEntity.ok(postService.updatePost(postId, dto));
     }
 
-    @DeleteMapping("postId")
+    @DeleteMapping("{postId}")
     public ResponseEntity<String> deletePost(
             @PathVariable Long postId){
         return ResponseEntity.ok(postService.deletePost(postId));
