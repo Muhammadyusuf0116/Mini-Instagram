@@ -1,5 +1,6 @@
 package org.example.miniinstagram.service.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.miniinstagram.dto.responseDto.ProfileResponseDTO;
 import org.example.miniinstagram.mapper.UserMapper;
@@ -21,6 +22,7 @@ public class FollowServiceImpl implements FollowService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    @Transactional
     @Override
     public void toggleFollow(Long userId) {
 
