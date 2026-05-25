@@ -15,7 +15,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                                "https://mini-insta-api.netlify.app/"
+                                "https://mini-insta-api.netlify.app"
                         )
                         .allowedMethods("*")
                         .allowedHeaders("*")
