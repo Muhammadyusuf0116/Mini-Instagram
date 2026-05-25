@@ -24,7 +24,7 @@ public class PostMapper {
         dto.setId(post.getId());
         dto.setTitle(post.getTitle());
         dto.setDescription(post.getDescription());
-        dto.setImageUrl(baseUrl + post.getImageUrl() + uploadPath);
+        dto.setImageUrl(baseUrl + "/uploads/posts/" + post.getImageUrl());
         dto.setCreatedAt(post.getCreatedAt());
 
         if (post.getUser() != null) {
